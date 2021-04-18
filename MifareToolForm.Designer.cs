@@ -52,6 +52,7 @@ namespace MifareReader
 			this.label8 = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
 			this.grpLoadSector = new System.Windows.Forms.GroupBox();
+			this.lblSectorNum = new System.Windows.Forms.Label();
 			this.grpLoadSector.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -261,6 +262,7 @@ namespace MifareReader
 			this.button2.TabIndex = 22;
 			this.button2.Text = "Write To Card";
 			this.button2.UseVisualStyleBackColor = false;
+			this.button2.Click += new System.EventHandler(this.writeSector);
 			// 
 			// grpLoadSector
 			// 
@@ -278,11 +280,21 @@ namespace MifareReader
 			this.grpLoadSector.TabStop = false;
 			this.grpLoadSector.Text = "Load Sector From Card";
 			// 
+			// lblSectorNum
+			// 
+			this.lblSectorNum.AutoSize = true;
+			this.lblSectorNum.Location = new System.Drawing.Point(239, 339);
+			this.lblSectorNum.Name = "lblSectorNum";
+			this.lblSectorNum.Size = new System.Drawing.Size(47, 13);
+			this.lblSectorNum.TabIndex = 24;
+			this.lblSectorNum.Text = "Sector 0";
+			// 
 			// MifareToolForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(569, 586);
+			this.Controls.Add(this.lblSectorNum);
 			this.Controls.Add(this.grpLoadSector);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.label8);
@@ -333,6 +345,7 @@ namespace MifareReader
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.GroupBox grpLoadSector;
+		private System.Windows.Forms.Label lblSectorNum;
 	}
 }
 

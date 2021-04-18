@@ -169,5 +169,10 @@ namespace MifareReader
 
 			lblCardPresence.Invoke(new Action(() => lblCardPresence.Text = "No Card Present"));
 		}
+
+		private void writeSector(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
