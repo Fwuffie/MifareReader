@@ -19,10 +19,12 @@ namespace MifareReader
 	{
 		public MifareToolForm()
 		{
+			console = new Console(this);
 			InitializeComponent();
 			UpdateScanners();
 		}
 
+		private Console console;
 		public SmartCardReader reader;
 		public CardEventArgs cardEventArg;
 
@@ -39,6 +41,17 @@ namespace MifareReader
 			lblCardInfo.Invoke(new Action(() => lblCardInfo.Text = "Card Info \n Device Class: "+ cardIdentification.PcscDeviceClass.ToString() + "\n Card Name: " + cardIdentification.PcscCardName.ToString() + "\n Card UID: " + BitConverter.ToString(uid)));
 
 		}
+
+		public string directTransmit()
+        {
+			ApduResponse response = new ApduResponse();
+			var apdu = new MiFare.PcSc.Iso7816.ApduCommand(0xFF, 0x00, 0x00, 0x00, new byte[] { 0x43, 0x40 }, 0x02);
+			Task<SmartCardConnection> conn = cardEventArg.SmartCard.ConnectAsync();
+			conn.Wait();
+			response.ExtractResponse( conn.Result.Transceive(apdu.GetBuffer()) );
+
+			return response.ToString();
+        }
 
 		private void ValidateKey(Object sender, EventArgs e)
 		{
@@ -162,7 +175,7 @@ namespace MifareReader
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
+				console.WriteLine(e.ToString());
 			}
 
 
@@ -174,5 +187,10 @@ namespace MifareReader
 		{
 
 		}
-	}
+
+        private void cmdConsole_Click(object sender, EventArgs e)
+        {
+			console.Show();
+		}
+    }
 }
