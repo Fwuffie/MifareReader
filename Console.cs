@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using MiFare.Classic;
 
 namespace MifareReader
 {
@@ -27,20 +28,34 @@ namespace MifareReader
             this.WriteLine( this.runCommand(command) );
         }
 
-        private string runCommand(String command)
+        private string runCommand(String rawcommand)
         {
-            if (command == "help")
-            {
-                return "help - Fetches this dialog";
-            }
-            else if (command == "m")
-            {
-                mainForm.directTransmit();
-                return mainForm.directTransmit();
-            }
+            String[] command = rawcommand.Split(' ');
 
+            switch (command[0])
+            {
+                case "help":
+                    return "help - Fetches this dialog";
+                case "rawadpu":
+                    return rawadpu(command);
+                default:
+                    return "Command Not Found, Type help For A list of commands";
+            }                
+        }
 
-                return "Command Not Found, Type help For A list of commands";
+        private string rawadpu(String[] command)
+        {
+            byte cla = Extensions.StringToByteArray(command[1])[0];
+            byte ins = Extensions.StringToByteArray(command[2])[0];
+            byte p1 = Extensions.StringToByteArray(command[3])[0];
+            byte p2 = Extensions.StringToByteArray(command[4])[0];
+            byte[] data = { };
+            if (command.Length > 5)
+            {
+                data = Extensions.StringToByteArray(command[5]);
+            }
+            
+            return mainForm.directTransmit(cla, ins, p1, p2, data);
         }
 
         private void txtCommand_KeyDown(object sender, KeyEventArgs e)

@@ -42,15 +42,15 @@ namespace MifareReader
 
 		}
 
-		public string directTransmit()
+		public string directTransmit(byte cla, byte instruction, byte P1, byte P2, byte[] data)
         {
 			ApduResponse response = new ApduResponse();
-			var apdu = new MiFare.PcSc.Iso7816.ApduCommand(0xFF, 0x00, 0x00, 0x00, new byte[] { 0x43, 0x40 }, 0x02);
+			var apdu = new MiFare.PcSc.Iso7816.ApduCommand(cla, instruction, P1, P2, data, (byte) data.Length);
 			Task<SmartCardConnection> conn = cardEventArg.SmartCard.ConnectAsync();
 			conn.Wait();
 			response.ExtractResponse( conn.Result.Transceive(apdu.GetBuffer()) );
 
-			return response.ToString();
+			return response.ToString() + ", ASCII: " + System.Text.Encoding.ASCII.GetString(response.ResponseData);
         }
 
 		private void ValidateKey(Object sender, EventArgs e)
